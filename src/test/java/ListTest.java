@@ -254,6 +254,26 @@ public class ListTest {
         assert listToTest.listIterator() instanceof ListIterator : "";
     }
 
+    @Test(name = "remove(int)")
+    public void afterRemoveElementByIndex_listSizeDecreasedByOne() {
+        // given
+        setUpListWithThreeObjectElements();
+        // when
+        listToTest.remove(1);
+        // then
+        assert listToTest.size() == 2 : "";
+    }
+
+    @Test(name = "remove(int)")
+    public void afterRemoveElementByIndex_listDoesntContainsThisElement() {
+        // given
+        setUpListWithThreeObjectElements();
+        // when
+        listToTest.remove(1);
+        // then
+        assert ! listToTest.contains(sampleObject2) : "";
+    }
+
 
     public void callAllTestMethods() {
         Method[] methods = this.getClass().getDeclaredMethods();
