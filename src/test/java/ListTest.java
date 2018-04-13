@@ -274,6 +274,60 @@ public class ListTest {
         assert ! listToTest.contains(sampleObject2) : "";
     }
 
+    @Test(name = "remove(int)")
+    public void afterRemoveElementByNegativeIndex_IndexOutOfBoundsExceptionIsThrown() {
+        // given
+        setUpListWithThreeObjectElements();
+        // when
+        boolean isIOOE = false;
+        try {
+            listToTest.remove(-1);
+        }
+        catch (IndexOutOfBoundsException e)
+        {
+            isIOOE = true;
+        }
+        // then
+        assert isIOOE : "IndexOutOfBoundsException hasn't thrown if index in remove method is negative";
+    }
+
+    @Test(name = "remove(int)")
+    public void afterRemoveElementByIndexBiggerThanTheLastIndex_IndexOutOfBoundsExceptionIsThrown() {
+        // given
+        setUpListWithThreeObjectElements();
+        // when
+        boolean isIOOE = false;
+        try {
+            listToTest.remove(3);
+        }
+        catch (IndexOutOfBoundsException e)
+        {
+            isIOOE = true;
+        }
+        // then
+        assert isIOOE : "IndexOutOfBoundsException hasn't thrown if index in remove method bigger than the last index of list";
+    }
+
+    @Test(name = "remove(int)")
+    public void afterRemoveElementByIndex_removedObjectIsReturned() {
+        // given
+        setUpListWithThreeObjectElements();
+        // when
+        Object removedObject = listToTest.remove(1);
+        // then
+        assert removedObject.equals(sampleObject2) : "Wrong object has been returned";
+    }
+
+    @Test(name = "remove(int)")
+    public void afterRemoveElementByIndex_indexOfObjectAfterTheRemovedObjectIsDecreasedByOne() {
+        // given
+        setUpListWithThreeObjectElements();
+        // when
+        listToTest.remove(1);
+        // then
+        assert listToTest.indexOf(sampleObject3) == 1 : "Incorrect index of object after removed object or object not in list";
+    }
+
 
     public void callAllTestMethods() {
         Method[] methods = this.getClass().getDeclaredMethods();
