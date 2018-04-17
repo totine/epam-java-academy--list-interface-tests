@@ -174,8 +174,7 @@ public class ListTest {
         boolean isNPE = false;
         try {
             listToTest.isEmpty();
-        }
-        catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             isNPE = true;
         }
 
@@ -250,8 +249,9 @@ public class ListTest {
 
         // when
 
+
         // then
-        assert listToTest.listIterator() instanceof ListIterator : "";
+        assert Arrays.asList(listToTest.listIterator().getClass().getInterfaces()).contains(ListIterator.class)  : "";
     }
 
     @Test(name = "remove(int)")
@@ -271,7 +271,7 @@ public class ListTest {
         // when
         listToTest.remove(1);
         // then
-        assert ! listToTest.contains(sampleObject2) : "";
+        assert !listToTest.contains(sampleObject2) : "";
     }
 
     @Test(name = "remove(int)")
@@ -282,9 +282,7 @@ public class ListTest {
         boolean isIOOE = false;
         try {
             listToTest.remove(-1);
-        }
-        catch (IndexOutOfBoundsException e)
-        {
+        } catch (IndexOutOfBoundsException e) {
             isIOOE = true;
         }
         // then
@@ -299,9 +297,7 @@ public class ListTest {
         boolean isIOOE = false;
         try {
             listToTest.remove(3);
-        }
-        catch (IndexOutOfBoundsException e)
-        {
+        } catch (IndexOutOfBoundsException e) {
             isIOOE = true;
         }
         // then
@@ -328,6 +324,73 @@ public class ListTest {
         assert listToTest.indexOf(sampleObject3) == 1 : "Incorrect index of object after removed object or object not in list";
     }
 
+    @Test(name = "remove(Object)")
+    public void afterRemoveElementByObject_listSizeDecreasedByOne() {
+        // given
+        setUpListWithThreeObjectElements();
+        // when
+        listToTest.remove(sampleObject1);
+        // then
+        assert listToTest.size() == 2 : "List size hasn't been decreased by one";
+    }
+
+    @Test(name = "remove(Object)")
+    public void afterRemoveElementByObject_listDoesntContainsThisElement() {
+        // given
+        setUpListWithThreeObjectElements();
+        // when
+        listToTest.remove(sampleObject2);
+        // then
+        assert !listToTest.contains(sampleObject2) : "List contains object that should be removed";
+    }
+
+    @Test(name = "remove(Object)")
+    public void afterTryToRemoveElementThatNotInList_listIsUnchanged() {
+        // given
+        setUpListWithThreeObjectElements();
+        // when
+        Object objectThatIsNotInList = new Object();
+        List<Object> listCopy = null;
+        try {
+            listCopy = (List<Object>) listImplementation.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        listCopy.add(sampleObject1);
+        listCopy.add(sampleObject2);
+        listCopy.add(sampleObject3);
+
+        Collections.copy(listCopy, listToTest);
+        listToTest.remove(objectThatIsNotInList);
+        // then
+
+        assert listCopy.equals(listToTest) : "list after try to remove object that is not in list has been changed";
+
+    }
+
+
+    @Test(name = "remove(Object)")
+    public void afterRemoveElementByObject_trueIsReturnedIfObjectWasInList() {
+        // given
+        setUpListWithThreeObjectElements();
+        // when
+        boolean isRemoved = listToTest.remove(sampleObject1);
+        // then
+        assert isRemoved : "Wrong object has been returned";
+    }
+
+    @Test(name = "remove(Object)")
+    public void afterRemoveElementByObject_indexOfObjectAfterTheRemovedObjectIsDecreasedByOne() {
+        // given
+        setUpListWithThreeObjectElements();
+        // when
+        listToTest.remove(sampleObject2);
+        // then
+        assert listToTest.indexOf(sampleObject3) == 1 : "Incorrect index of object after removed object or object not in list";
+    }
 
     public void callAllTestMethods() {
         Method[] methods = this.getClass().getDeclaredMethods();
@@ -339,7 +402,11 @@ public class ListTest {
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 } catch (InvocationTargetException e) {
-                    System.out.format("BAD %s %s FAILED %s\n", listToTest.getClass().getSimpleName(), m.getName(), e.getCause().getMessage());
+                    if (e.getCause().getClass().equals(AssertionError.class))
+                        System.out.format("BAD %s %s FAILED %s\n", listToTest.getClass().getSimpleName(), m.getName(), e.getCause().getMessage());
+                    else {
+                        System.out.format("Another Exception %s %s %s\n", listToTest.getClass().getSimpleName(), m.getName(), e.getCause());
+                    }
                 }
             }
         }
