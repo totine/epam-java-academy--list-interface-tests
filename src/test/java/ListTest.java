@@ -118,6 +118,24 @@ public class ListTest {
         assert 3 == listToTest.size() : "incorrect list size";
     }
 
+    @Test(name = "size()")
+    public void ifListIsNull_afterCallSizeMethod_NPEisThrown() {
+        // given
+        listToTest = null;
+
+        // when
+        boolean isNPE = false;
+        try {
+            listToTest.size();
+        }
+        catch (NullPointerException e) {
+            isNPE = true;
+        }
+        //then
+        assert isNPE : "NPE not thrown";
+        cleanAfterAssignNullToList();
+    }
+
     @Test(name = "add()")
     public void afterAddRandomNumberElementsToList_listSizeEqualsThisRandomNumber() {
         // given
@@ -315,6 +333,19 @@ public class ListTest {
 
         // when
 
+        // then
+        assert !listToTest.contains(objectToAdd) : "object shouldn't be in list";
+    }
+
+    @Test(name = "contains(), add(), remove()")
+    public void objectThatAddedAndRemovedToList_shouldntBeInList() {
+        // given
+        setUpListWithThreeObjectElements();
+        Object objectToAdd = new Object();
+
+        // when
+        listToTest.add(objectToAdd);
+        listToTest.remove(objectToAdd);
         // then
         assert !listToTest.contains(objectToAdd) : "object shouldn't be in list";
     }
