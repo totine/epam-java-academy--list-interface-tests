@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.stream.IntStream;
 
 public class ListTest {
 
@@ -151,7 +152,7 @@ public class ListTest {
     }
 
     @Test(name = "addAll()")
-    public void afterAddAllRandomNumberElementsToList_listSizeEqualsThisRandomNumber() {
+    public void afterAddAllRandomNumberElementsToEmptyList_listSizeEqualsThisRandomNumber() {
         // given
         setUpNewEmptyList();
         int randomInt = getRandomInt(1, 100);
@@ -162,6 +163,32 @@ public class ListTest {
 
         //then
         assert randomInt == listToTest.size() : "incorrect list size";
+    }
+
+    public void afterAddAllRandomNumberElementsToNotEmptyList_listSizeIsIncreasedByThisRandomNumber() {
+        // given
+        setUpListWithThreeObjectElements();
+        int randomInt = getRandomInt(1, 100);
+        createArrayOfSampleObject(randomInt);
+
+        // when
+        listToTest.addAll(Arrays.asList(objectArray));
+
+        //then
+        assert 3+randomInt == listToTest.size() : "incorrect list size";
+    }
+
+    @Test(name = "addAll()")
+    public void afterAddAllRandomNumberElementsToList_newElementsAreOnTheEndOfList() {
+        // given
+        setUpListWithThreeObjectElements();
+        int randomInt = getRandomInt(1, 100);
+        createArrayOfSampleObject(randomInt);
+
+        // when
+        listToTest.addAll(Arrays.asList(objectArray));
+        //then
+        assert IntStream.range(3, 3+randomInt).allMatch(num -> listToTest.get(num).equals(objectArray[num-3])) : "elements are not on the end of list";
     }
 
     @Test(name = "isEmpty()")
