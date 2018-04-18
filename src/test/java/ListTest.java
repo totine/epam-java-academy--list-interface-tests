@@ -191,6 +191,67 @@ public class ListTest {
         assert IntStream.range(3, 3+randomInt).allMatch(num -> listToTest.get(num).equals(objectArray[num-3])) : "elements are not on the end of list";
     }
 
+    @Test(name = "retainAll()")
+    public void ifAllElemententsInArgumentCollectionAreInList_afterRetainAll_listSizeIsEqualCollectionSize() {
+        // given
+        setUpListWithThreeObjectElements();
+        Object a = new Object();
+        Object b = new Object();
+        Object c = new Object();
+        Object d = new Object();
+        Object[] objectArray = {a, b, c, d};
+        listToTest.add(a);
+        listToTest.add(b);
+        listToTest.add(c);
+        listToTest.add(d);
+
+
+        // when
+            listToTest.retainAll(Arrays.asList(objectArray));
+        // then
+        assert 4 == listToTest.size() : "";
+    }
+
+    @Test(name = "retainAll()")
+    public void ifNotAllElemententsInArgumentCollectionAreInList_afterRetainAll_listSizeIsEqualCommonElementsNumber() {
+        // given
+        setUpListWithThreeObjectElements();
+        Object a = new Object();
+        Object b = new Object();
+        Object c = new Object();
+        Object d = new Object();
+        Object[] objectArray = {a, b, c, d};
+        listToTest.add(a);
+        listToTest.add(b);
+        listToTest.add(c);
+
+
+
+        // when
+        listToTest.retainAll(Arrays.asList(objectArray));
+        // then
+        assert 3 == listToTest.size() : "";
+    }
+
+    @Test(name = "retainAll()")
+    public void ifAnyElemententOfArgumentCollectionIsInList_afterRetainAll_listIsEmpty() {
+        // given
+        setUpListWithThreeObjectElements();
+        Object a = new Object();
+        Object b = new Object();
+        Object c = new Object();
+        Object d = new Object();
+        Object[] objectArray = {a, b, c, d};
+
+
+
+
+        // when
+        listToTest.retainAll(Arrays.asList(objectArray));
+        // then
+        assert listToTest.isEmpty() : "";
+    }
+
     @Test(name = "isEmpty()")
     public void ifListIsNull_afterCallingIsEmpty_NullPointerExceptionIsThrown() {
         // given
