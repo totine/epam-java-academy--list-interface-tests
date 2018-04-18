@@ -254,6 +254,23 @@ public class ListTest {
         assert Arrays.asList(listToTest.listIterator().getClass().getInterfaces()).contains(ListIterator.class)  : "";
     }
 
+    @Test(name = "listIterator()")
+    public void listIteratorOnThreeObjectList_hasThreeNexts() {
+        // given
+        setUpListWithThreeObjectElements();
+
+        // when
+        ListIterator li = listToTest.listIterator();
+        int i = 0;
+        while (li.hasNext()) {
+            li.next();
+            i++;
+        }
+
+        // then
+        assert i == 3  : "";
+    }
+
     @Test(name = "remove(int)")
     public void afterRemoveElementByIndex_listSizeDecreasedByOne() {
         // given
@@ -379,7 +396,7 @@ public class ListTest {
         // when
         boolean isRemoved = listToTest.remove(sampleObject1);
         // then
-        assert isRemoved : "Wrong object has been returned";
+        assert isRemoved : "Expected true, false returned";
     }
 
     @Test(name = "remove(Object)")
