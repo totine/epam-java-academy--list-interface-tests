@@ -321,6 +321,40 @@ public class ListTest {
         assert isIOOE : "IndexOutOfBoundsException hasn't thrown if index in remove method bigger than the last index of list";
     }
 
+    @Test(name = "set(int, E)")
+    public void afterSetElement_thisElementIsInList() {
+        // given
+        setUpListWithThreeObjectElements();
+        Object newObject = new Object();
+        // when
+        listToTest.set(1, newObject);
+        // then
+        assert listToTest.contains(newObject): "list doesn't contain object to set";
+    }
+
+
+    @Test(name = "set(int, E)")
+    public void afterSetElement_substitutedElementNotInList() {
+        // given
+        setUpListWithThreeObjectElements();
+        Object newObject = new Object();
+        // when
+        listToTest.set(1, newObject);
+        // then
+        assert !listToTest.contains(sampleObject2): "list contains object that shouldn't be there";
+    }
+
+    @Test(name = "set(int, E)")
+    public void afterSetElement_listSizeShouldBeTheSame() {
+        // given
+        setUpListWithThreeObjectElements();
+        Object newObject = new Object();
+        // when
+        listToTest.set(1, newObject);
+        // then
+        assert listToTest.size() == 3: "list size increased or decreased";
+    }
+
     @Test(name = "remove(int)")
     public void afterRemoveElementByIndex_removedObjectIsReturned() {
         // given
