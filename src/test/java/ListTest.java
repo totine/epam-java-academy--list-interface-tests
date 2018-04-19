@@ -209,6 +209,37 @@ public class ListTest {
         assert IntStream.range(3, 3+randomInt).allMatch(num -> listToTest.get(num).equals(objectArray[num-3])) : "elements are not on the end of list";
     }
 
+    @Test(name = "toArray")
+    public void afterCallToArrayOnEmptyList_emptyArrayIsReturned() {
+        // given
+        setUpNewEmptyList();
+        // when
+        Object[] array = listToTest.toArray();
+        // then
+        assert array.length == 0 : "";
+    }
+
+    @Test(name = "toArray")
+    public void afterCallToArrayOnThreeElementList_threeElementArrayIsReturned() {
+        // given
+        setUpListWithThreeObjectElements();
+        // when
+        Object[] array = listToTest.toArray();
+        // then
+        assert array.length == 3 : "";
+    }
+
+    @Test(name = "toArray")
+    public void afterCallToArrayOnThreeElementList_allThreeElementsAreInArrayInTheSameOrder() {
+        // given
+        setUpListWithThreeObjectElements();
+        // when
+        Object[] array = listToTest.toArray();
+        // then
+        assert array[0].equals(listToTest.get(0)) && array[1].equals(listToTest.get(1)) && array[2].equals(listToTest.get(2)) : "";
+    }
+
+
     @Test(name = "retainAll()")
     public void ifAllElemententsInArgumentCollectionAreInList_afterRetainAll_listSizeIsEqualCollectionSize() {
         // given
@@ -222,7 +253,6 @@ public class ListTest {
         listToTest.add(b);
         listToTest.add(c);
         listToTest.add(d);
-
 
         // when
             listToTest.retainAll(Arrays.asList(objectArray));
